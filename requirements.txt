@@ -1,0 +1,25 @@
+# --- Core AI Engine ---
+llama-cpp-python
+huggingface-hub
+sentence-transformers
+
+# --- Long-Term Memory (The Missing Piece) ---
+chromadb
+
+# --- Audio (Hearing & Speaking) ---
+faster-whisper
+kokoro-onnx
+sounddevice
+soundfile
+onnxruntime-gpu
+
+# --- Tools (Screen, Search, & Files) ---
+pyautogui
+mss
+duckduckgo-search
+beautifulsoup4
+Pillow
+numpy
+pypdf
+python-docx
+

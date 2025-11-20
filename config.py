@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODELS_DIR = os.path.join(BASE_DIR, "my_jarvis_models")
 
-# --- MODEL CONFIGURATION ---
+# --- AGENTS ---
 AGENTS = {
     "coder": {
         "path": os.path.join(MODELS_DIR, "coder", "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"),
@@ -18,19 +18,27 @@ AGENTS = {
     },
     "friend": {
         "path": os.path.join(MODELS_DIR, "friend", "smollm2-1.7b-instruct-q4_k_m.gguf"),
-        "context": 8192, # Friend gets more memory!
+        "context": 8192,
         "gpu_layers": -1
     },
     "vision": {
         "path": os.path.join(MODELS_DIR, "vision", "Qwen2-VL-2B-Instruct-Q4_K_M.gguf"),
+        "projector": os.path.join(MODELS_DIR, "vision", "mmproj-Qwen2-VL-2B-Instruct-f16.gguf"),
         "context": 2048,
         "gpu_layers": -1
     }
 }
 
-# Audio Models (Auto-downloaded by libraries if missing, or use local if set)
-WHISPER_MODEL_SIZE = "distil-small.en"
+# --- VOICE ---
+VOICE = {
+    "model": os.path.join(MODELS_DIR, "voice", "kokoro-v0_19.onnx"),
+    "voices": os.path.join(MODELS_DIR, "voice", "voices.bin"),
+    "speaker": "af_sarah"
+}
 
-# Voice Settings
-KOKORO_MODEL = os.path.join(MODELS_DIR, "voice", "kokoro-v0_19.onnx")
-KOKORO_VOICES = os.path.join(MODELS_DIR, "voice", "voices.bin")
+# --- MEMORY ---
+MEMORY = {
+    "embedder": os.path.join(MODELS_DIR, "memory_embedder"),
+    "reranker": os.path.join(MODELS_DIR, "memory_reranker"),
+    "db_path": os.path.join(BASE_DIR, "memory_db")
+}

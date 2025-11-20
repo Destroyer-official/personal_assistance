@@ -25,8 +25,14 @@ my_jarvis_models/
 *.onnx
 voices.bin
 
-# Tests (as requested)
-test/
+# Local config and secrets - do NOT push these to GitHub
+config.py
+.env
+.env.*
+secrets/
+*.key
+*.pem
+
 
 # Downloaded models/cache
 download_models/
