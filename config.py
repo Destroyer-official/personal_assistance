@@ -1,10 +1,10 @@
 import os
 
-# --- PATHS ---
+# --- SYSTEM PATHS ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODELS_DIR = os.path.join(BASE_DIR, "my_jarvis_models")
 
-# --- AGENTS ---
+# --- MODEL PATHS ---
 AGENTS = {
     "coder": {
         "path": os.path.join(MODELS_DIR, "coder", "qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"),

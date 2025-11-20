@@ -4,7 +4,7 @@ import config
 class LLMAgent:
     def __init__(self):
         self.current_role = None
-        self.model = None
+        self.model = None  # Unified variable name
 
     def load(self, role):
         """Swaps the active model in VRAM."""
@@ -14,12 +14,13 @@ class LLMAgent:
         print(f"\n🔄 Swapping to {role.upper()} Agent...", end="", flush=True)
 
         # Unload previous model to free VRAM
-        if self.current_model:
-            del self.current_model
+        if self.model:
+            del self.model
+            self.model = None
 
         conf = config.AGENTS[role]
         try:
-            self.current_model = Llama(
+            self.model = Llama(
                 model_path=conf["path"],
                 n_gpu_layers=conf["gpu_layers"],
                 n_ctx=conf["context"],
@@ -29,18 +30,16 @@ class LLMAgent:
             print(" Online!")
         except Exception as e:
             print(f"\n❌ Error loading {role}: {e}")
+            self.current_role = None
 
     def chat(self, history):
-        """
-        Generates a response based on the full chat history.
-        """
-        if not self.current_model:
+        """Generates a response based on history."""
+        if not self.model:
             print("❌ No model loaded!")
             return ""
 
-        # Stream the response for real-time feel
         try:
-            output = self.current_model.create_chat_completion(
+            output = self.model.create_chat_completion(
                 messages=history,
                 stream=True,
                 temperature=0.7
@@ -53,7 +52,7 @@ class LLMAgent:
                     text = chunk["choices"][0]["delta"]["content"]
                     print(text, end="", flush=True)
                     full_text += text
-            print() # New line
+            print()
             return full_text
         except Exception as e:
             return f"Error: {e}"
