@@ -1,0 +1,39 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Common editor/IDE files
+.vscode/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Large model files and directories
+# Ignore the whole models folder containing GGUF/large artifacts
+my_jarvis_models/
+*.gguf
+*.safetensors
+*.onnx
+voices.bin
+
+# Tests (as requested)
+test/
+
+# Downloaded models/cache
+download_models/
+
+# The literal token you provided (possible misspelling of "pycache")
+puchecr/
+
+# OS files
+Thumbs.db
+desktop.ini
