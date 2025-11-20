@@ -35,10 +35,3 @@ VOICE = {
     "voices": os.path.join(MODELS_DIR, "voice", "voices.bin"),
     "speaker": "af_sarah"
 }
-
-# --- MEMORY ---
-MEMORY = {
-    "embedder": os.path.join(MODELS_DIR, "memory_embedder"),
-    "reranker": os.path.join(MODELS_DIR, "memory_reranker"),
-    "db_path": os.path.join(BASE_DIR, "memory_db")
-}

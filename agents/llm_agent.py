@@ -7,16 +7,22 @@ class LLMAgent:
         self.model = None
 
     def load(self, role):
-        if self.current_role == role: return
+        """Swaps the active model in VRAM."""
+        if self.current_role == role:
+            return
 
         print(f"\n🔄 Swapping to {role.upper()} Agent...", end="", flush=True)
-        if self.model: del self.model
 
+        # Unload previous model to free VRAM
+        if self.current_model:
+            del self.current_model
+
+        conf = config.AGENTS[role]
         try:
-            self.model = Llama(
-                model_path=config.AGENTS[role]["path"],
-                n_gpu_layers=config.AGENTS[role]["gpu_layers"],
-                n_ctx=config.AGENTS[role]["context"],
+            self.current_model = Llama(
+                model_path=conf["path"],
+                n_gpu_layers=conf["gpu_layers"],
+                n_ctx=conf["context"],
                 verbose=False
             )
             self.current_role = role
@@ -25,20 +31,29 @@ class LLMAgent:
             print(f"\n❌ Error loading {role}: {e}")
 
     def chat(self, history):
-        if not self.model: return "❌ Brain not loaded."
+        """
+        Generates a response based on the full chat history.
+        """
+        if not self.current_model:
+            print("❌ No model loaded!")
+            return ""
 
-        output = self.model.create_chat_completion(
-            messages=history,
-            stream=True,
-            temperature=0.7
-        )
+        # Stream the response for real-time feel
+        try:
+            output = self.current_model.create_chat_completion(
+                messages=history,
+                stream=True,
+                temperature=0.7
+            )
 
-        print(f"[{self.current_role.upper()}]: ", end="", flush=True)
-        full_text = ""
-        for chunk in output:
-            if "content" in chunk["choices"][0]["delta"]:
-                text = chunk["choices"][0]["delta"]["content"]
-                print(text, end="", flush=True)
-                full_text += text
-        print()
-        return full_text
+            print(f"[{self.current_role.upper()}]: ", end="", flush=True)
+            full_text = ""
+            for chunk in output:
+                if "content" in chunk["choices"][0]["delta"]:
+                    text = chunk["choices"][0]["delta"]["content"]
+                    print(text, end="", flush=True)
+                    full_text += text
+            print() # New line
+            return full_text
+        except Exception as e:
+            return f"Error: {e}"
